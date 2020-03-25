@@ -20,18 +20,16 @@ import numpy as np
 
 image_list_sanatoase = []
 
-for filename in glob.glob(r'C:\Users\Practica\Desktop\Clasificare frunze v.2\sanatoase/*.jpg'):
+for filename in glob.glob(r'C:\Users\Practica\Desktop\Baza de date organizata- funze\frunze de vita de vie\Antrenare\healthy/*.jpg'):
     im = cv2.imread(filename)
     image_list_sanatoase.append(im)
     
 image_list_infectate = []
 
-for filename in glob.glob(r'C:\Users\Practica\Desktop\Clasificare frunze v.2\infectate/*.jpg'):
+for filename in glob.glob(r'C:\Users\Practica\Desktop\Baza de date organizata- funze\frunze de vita de vie\Antrenare\infected/*.jpg'):
     im = cv2.imread(filename)
     image_list_infectate.append(im)
-    
 
-nr_imagini_sanatoase = len(image_list_sanatoase)
 nr_imagini_infectate = len(image_list_infectate)
 print(nr_imagini_infectate)
 desc = LocalBinaryPatterns(8, 1)
@@ -69,12 +67,20 @@ clf.fit(X, Y)
 
 print('*****************************************************************')
 
+
 image_list_testare = []
-for filename in glob.glob(r'C:\Users\Practica\Desktop\Clasificare frunze v.2\testare/*.jpg'):
+for filename in glob.glob(r'C:\Users\Practica\Desktop\Baza de date organizata- funze\frunze de vita de vie\Testare\healthy/*.jpg'):
+    im = cv2.imread(filename)
+    image_list_testare.append(im)
+
+nr_imagini_testare_sanatoase = len(image_list_testare)
+    
+for filename in glob.glob(r'C:\Users\Practica\Desktop\Baza de date organizata- funze\frunze de vita de vie\Testare\infected/*.jpg'):
     im = cv2.imread(filename)
     image_list_testare.append(im)
     
 nr_imagini_testare = len(image_list_testare)
+nr_imagini_testare_infectate = nr_imagini_testare - nr_imagini_testare_sanatoase
 
 X_testare = []
 cnt = 0
@@ -87,9 +93,9 @@ for i in range (0, nr_imagini_testare):
 
 Y_real =[]
 cnt = 0
-for i in range (0, 10):
+for i in range (0, nr_imagini_testare_sanatoase):
     Y_real.append(0)
-for i in range (0, 10):
+for i in range (nr_imagini_testare_sanatoase, nr_imagini_testare):
     Y_real.append(1)
 
 Y_prezis = clf.predict(X_testare)
